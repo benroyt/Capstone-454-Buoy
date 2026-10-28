@@ -51,7 +51,7 @@ bool readLight(float &lux) {                   // readLight receives a reference
     return false;
   }
 
-  delay(20);
+  delay(180);
 
   // ask sensor to send back 2 bytes of measurement data
   if (Wire.requestFrom(LIGHT_I2C_ADDRESS, (uint8_t)2) != 2) {
@@ -59,7 +59,9 @@ bool readLight(float &lux) {                   // readLight receives a reference
   }
 
   // convert raw sensor value into lux using the conversion factor of 1.2 (taken from datasheet)
-  uint16_t raw = ((uint16_t)Wire.read() << 8) | Wire.read();
+  uint8_t hi = Wire.read();
+  uint8_t lo = Wire.read();
+  uint16_t raw = ((uint16_t)hi << 8) | lo;
   lux = raw / 1.2;
 
   return true;
@@ -144,8 +146,8 @@ void loop() {
     Serial.println(" V");
 
     // print water temperature
-    Serial.print("water temperature: ");
     if (waterC != DEVICE_DISCONNECTED_C) {
+      Serial.print("water temperature: ");
       Serial.print(waterC, 2);
       Serial.println(" C");
     } else {
@@ -153,8 +155,8 @@ void loop() {
     }
 
     // print air temperature
-    Serial.print("air temperature: ");
     if (!isnan(airC)) {
+      Serial.print("air temperature: ");
       Serial.print(airC, 2);
       Serial.println(" C");
     } else {
