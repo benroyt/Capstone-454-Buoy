@@ -4,6 +4,9 @@
 #include <DHT.h>                    // enables comm & provides functions to read air temp and humidity using one digital pin (2)
 #include <math.h>                   // provides mathematical functions
 
+// changes to code for testing:
+//    lines 30-31 (changing reporting interval) 
+
 // PIN DEFS
 // analog inputs
 const int PH_PIN = A0;              // reads pH sensor voltage
@@ -22,7 +25,12 @@ const int LED_PIN = 3;              // controls LED
 const int HUMIDITY_TYPE = DHT11;
 
 // reporting interval for sensor readings (every 30 min)
-const unsigned long REPORT_INTERVAL = 30UL * 60UL * 1000UL;
+// const unsigned long REPORT_INTERVAL = 30UL * 60UL * 1000UL;
+
+// TEST -- reporting interval for sensor readings (every 1 second)
+const unsigned long REPORT_INTERVAL = 1000UL;
+
+// reporting interval for light readings (every 1 second)
 const unsigned long LIGHT_INTERVAL = 1000UL;
 
 // light-checking interval (every 1 second)
@@ -121,7 +129,7 @@ void loop() {
 
     // read pH value [NEED A CALIBRATION RELATIONSHIP HERE]
     int phRaw = analogRead(PH_PIN);
-    float phVoltage = phRaw * (5.0 / 1024.0);
+    float phVoltage = phRaw * (5.0 / 1023.0);
 
     // read water temperature sensor data
     waterTempSensor.requestTemperatures();
@@ -168,7 +176,7 @@ void loop() {
       Serial.print(humidity, 2);
       Serial.println(" %");
     } else {
-      print("ERROR")
+      Serial.print("ERROR")
     }
 
     // print hall value [need to change to calibrated value]
@@ -178,9 +186,9 @@ void loop() {
     // print LED state
     Serial.print("LED: ");
     if (ledIsOn) {
-      Serial.println("ON")
+      Serial.println("ON");
     } else {
-      Serial.println("OFF")
+      Serial.println("OFF");
     }
   }
 }
