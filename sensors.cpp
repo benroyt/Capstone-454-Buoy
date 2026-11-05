@@ -10,7 +10,6 @@
 // PIN DEFS
 // analog inputs
 const int PH_PIN = A0;              // reads pH sensor voltage
-const int HALL_PIN = A2;            // reads Hall sensor voltage
 
 // digital sensor pins
 const int WATER_TEMP_PIN = 9;       // water-temp sensor
@@ -139,9 +138,6 @@ void loop() {
     float airC = humiditySensor.readTemperature();
     float humidity = humiditySensor.readHumidity();
 
-    // read hall sensor data [NEED A CALIBRATION RELATIONSHIP HERE]
-    int hallRaw = analogRead(HALL_PIN);
-
     Serial.println("\nsensor readings:");
 
     // print pH value
@@ -178,10 +174,6 @@ void loop() {
     } else {
       Serial.print("ERROR")
     }
-
-    // print hall value [need to change to calibrated value]
-    Serial.print("hall sensor ADC: ");
-    Serial.println(hallRaw);
 
     // print LED state
     Serial.print("LED: ");
